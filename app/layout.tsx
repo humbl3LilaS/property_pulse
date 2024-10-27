@@ -16,6 +16,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "PropertyPulse",
   description: "Find the best place which you deserve",
+  keywords: ["rental", "find rentals", "find properties"]
 };
 
 export default function RootLayout({

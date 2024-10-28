@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "/icons/logo.png";
-import Profile from "/icons/profile.png"
+import {Button} from "@/components/ui/button";
+
 
 const NavBar = () => {
     return (
@@ -9,7 +9,7 @@ const NavBar = () => {
             <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
                 <div className='relative flex h-20 items-center justify-between'>
                     <div className='absolute inset-y-0 left-0 flex items-center md:hidden'>
-                        <button
+                        <Button
                             type='button'
                             id='mobile-dropdown-button'
                             className='relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'
@@ -32,36 +32,37 @@ const NavBar = () => {
                                     d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5'
                                 />
                             </svg>
-                        </button>
+                        </Button>
                     </div>
 
                     <div className='flex flex-1 items-center justify-center md:items-stretch md:justify-start'>
 
                         <Link className='flex flex-shrink-0 items-center' href='/'>
-                            <Image className='h-10 w-auto' src={"/icons/logo.png"} alt='PropertyPulse' width={30} height={30} />
+                            <Image className='h-10 w-auto' src={"/icons/logo.png"} alt='PropertyPulse' width={30}
+                                   height={30}/>
 
                             <span className='hidden md:block text-white text-2xl font-bold ml-2'>
-                PropertyPulse
-              </span>
+                              PropertyPulse
+                            </span>
                         </Link>
 
                         <div className='hidden md:ml-6 md:block'>
                             <div className='flex space-x-2'>
                                 <Link
                                     href='/'
-                                    className='text-white bg-black hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'
+                                    className='px-3 py-2 text-white bg-black hover:bg-gray-900 hover:text-white rounded-md transition-colors duration-500 '
                                 >
                                     Home
                                 </Link>
                                 <Link
                                     href='/properties'
-                                    className='text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'
+                                    className='px-3 py-2 text-white hover:bg-gray-900 hover:text-white rounded-md transition-colors duration-500'
                                 >
                                     Properties
                                 </Link>
                                 <Link
                                     href='/properties/add'
-                                    className='text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'
+                                    className='px-3 py-2 text-white hover:bg-gray-900 hover:text-white rounded-md transition-colors duration-500'
                                 >
                                     Add Property
                                 </Link>
@@ -69,18 +70,16 @@ const NavBar = () => {
                         </div>
                     </div>
 
-                    {/* <!-- Right Side Menu (Logged Out) --> */}
                     <div className='hidden md:block md:ml-6'>
                         <div className='flex items-center'>
-                            <button
-                                className='flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'>
+                            <Button type={"button"}
+                                    className='flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 transition-colors duration-500'>
                                 <i className='fa-brands fa-google text-white mr-2'></i>
                                 <span>Login or Register</span>
-                            </button>
+                            </Button>
                         </div>
                     </div>
 
-                    {/* <!-- Right Side Menu (Logged In) --> */}
                     <div
                         className='absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0'>
                         <Link href='/messages' className='relative group'>
@@ -107,9 +106,8 @@ const NavBar = () => {
                             </button>
                             <span
                                 className='absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full'>
-                2
-
-              </span>
+                                    2
+                            </span>
                         </Link>
 
                         <div className='relative ml-3'>
@@ -141,7 +139,7 @@ const NavBar = () => {
                                 aria-labelledby='user-menu-button'
                                 tabIndex={-1}
                             >
-                                <a
+                                <Link
                                     href='/profile'
                                     className='block px-4 py-2 text-sm text-gray-700'
                                     role='menuitem'
@@ -149,8 +147,8 @@ const NavBar = () => {
                                     id='user-menu-item-0'
                                 >
                                     Your Profile
-                                </a>
-                                <a
+                                </Link>
+                                <Link
                                     href='/profile/saved'
                                     className='block px-4 py-2 text-sm text-gray-700'
                                     role='menuitem'
@@ -158,7 +156,7 @@ const NavBar = () => {
                                     id='user-menu-item-2'
                                 >
                                     Saved Properties
-                                </a>
+                                </Link>
                                 <a
                                     href='#'
                                     className='block px-4 py-2 text-sm text-gray-700'

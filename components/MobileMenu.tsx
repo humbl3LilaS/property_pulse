@@ -1,8 +1,8 @@
 "use client"
 import {useState} from "react";
 import {Button} from "@/components/ui/button";
-import Link from "next/link";
 import {FaGoogle} from "react-icons/fa";
+import NavLink from "@/components/NavLink";
 
 const MobileMenu = () => {
     const [menuOpen, setMenuOpen] = useState(false)
@@ -47,27 +47,27 @@ const MobileMenu = () => {
                 id='mobile-menu'
             >
                 <div className='flex flex-col gap-y-6 text-white font-bold'>
-                    <Link
+                    <NavLink
                         href='/'
                         className='bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium'
                         onClick={menuToggler}
                     >
                         Home
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                         href='/properties'
                         className=' px-3 py-2  block rounded-md bg-black/50 text-black text-base font-medium transition-colors duration-500 hover:bg-gray-700 hover:text-white'
                         onClick={menuToggler}
                     >
                         Properties
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                         href='/properties/add'
                         className=' px-3 py-2  block rounded-md bg-black/50 text-black text-base font-medium transition-colors duration-500 hover:bg-gray-700 hover:text-white'
                         onClick={menuToggler}
                     >
                         Add Property
-                    </Link>
+                    </NavLink>
                     <button
                         type='button'
                         className='px-3 py-2 flex items-center gap-x-4 rounded-md bg-black/50 text-black text-base font-medium transition-colors duration-500 hover:bg-gray-700 hover:text-white'

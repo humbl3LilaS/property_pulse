@@ -7,6 +7,9 @@ import NavLink from "@/components/NavLink";
 const MobileMenu = () => {
     const [menuOpen, setMenuOpen] = useState(false)
 
+    //Todo: replace with session later
+    const isLogin = false;
+
     const menuToggler = () => {
         setMenuOpen(prev => !prev)
     }
@@ -61,13 +64,13 @@ const MobileMenu = () => {
                     >
                         Properties
                     </NavLink>
-                    <NavLink
+                    {isLogin && <NavLink
                         href='/properties/add'
                         className=' px-3 py-2  block rounded-md bg-black/50 text-black text-base font-medium transition-colors duration-500 hover:bg-gray-700 hover:text-white'
                         onClick={menuToggler}
                     >
                         Add Property
-                    </NavLink>
+                    </NavLink>}
                     <button
                         type='button'
                         className='px-3 py-2 flex items-center gap-x-4 rounded-md bg-black/50 text-black text-base font-medium transition-colors duration-500 hover:bg-gray-700 hover:text-white'

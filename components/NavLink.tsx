@@ -15,8 +15,8 @@ const NavLink = ({href, children, className, onClick}: NavLinkProps) => {
     const currentPath = usePathname();
 
     return (
-        <Link href={href} className={cn("px-4 py-2 rounded-lg",currentPath === href && "bg-black",className)}
-            onClick={onClick}
+        <Link href={href} className={cn("px-4 py-2 rounded-lg", currentPath === href && "bg-black", className)}
+              onClick={onClick}
         >
             {children}
         </Link>

@@ -1,7 +1,6 @@
 import {Schema, model, Model, models} from "mongoose";
 
 export interface TProperty {
-    _id: string;
     owner: Schema.Types.ObjectId;
     name: string;
     type: string;

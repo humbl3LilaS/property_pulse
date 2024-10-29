@@ -1,6 +1,13 @@
-import {Schema, models, model} from "mongoose";
+import {Schema, model, Model} from "mongoose";
 
-const UserSchema = new Schema({
+interface UserSchema {
+    email: Schema.Types.String;
+    username: string;
+    image?: string;
+    bookmarks: Schema.Types.ObjectId[];
+}
+
+const UserSchema = new Schema<UserSchema>({
     email: {
         type: String,
         unique: [true, "Email already exists"],
@@ -21,6 +28,8 @@ const UserSchema = new Schema({
     ]
 }, {timestamps: true});
 
-const User = models.user || model("User", UserSchema);
+export type User = Model<UserSchema>;
+
+const User = model<UserSchema, User>("User", UserSchema);
 
 export default User;

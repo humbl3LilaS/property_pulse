@@ -3,6 +3,7 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import {signOut} from "next-auth/react";
 
 const ProfileMenu = () => {
     return (
@@ -25,7 +26,7 @@ const ProfileMenu = () => {
                     <Link href={"/profile/saved"}>Saved Properties</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild={true}>
-                    <button className={"w-full"}>Sign Out</button>
+                    <button className={"w-full"} onClick={() => signOut()}>Sign Out</button>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

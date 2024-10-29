@@ -1,4 +1,4 @@
-import {Schema, model, Model} from "mongoose";
+import {Schema, model, Model, models} from "mongoose";
 
 export interface TProperty {
     _id: string;
@@ -111,4 +111,4 @@ const PropertySchema = new Schema<TProperty>({
 
 export type PropertyModel = Model<TProperty>
 
-export const Property = model<TProperty, PropertyModel>("Property", PropertySchema);
+export const Property = models.Property as Model<TProperty, PropertyModel> || model<TProperty, PropertyModel>("Property", PropertySchema);

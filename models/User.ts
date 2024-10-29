@@ -1,4 +1,4 @@
-import {Schema, model, Model} from "mongoose";
+import {Schema, model, Model, models} from "mongoose";
 
 interface TUser {
     email: Schema.Types.String;
@@ -32,4 +32,4 @@ const UserSchema = new Schema<TUser>({
 
 export type UserModel = Model<TUser>;
 
-export const User = model<TUser, UserModel>("User", UserSchema);
+export const User = models.User as Model<TUser, UserModel> || model<TUser, UserModel>("User", UserSchema);

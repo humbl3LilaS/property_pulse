@@ -1,11 +1,12 @@
-import properties from "@/properties.json"
-import PropertyCard, {PropertyData} from "@/components/PropertyCard";
+import properties from "@/properties.json";
+import PropertyCard from "@/components/PropertyCard";
 import Link from "next/link";
+import {fetchProperties} from "@/services/propertyServices";
 
-const HomeProperty = () => {
-
-    const recentProperties = properties.sort(() => Math.random() - Math.random()).slice(0,
-                                                                                        3) as unknown as PropertyData[];
+const HomeProperty = async () => {
+    const properties = await fetchProperties();
+    const recentProperties = properties ? properties.sort(() => Math.random() - Math.random()).slice(0,
+        3) : [];
 
     return (
         <section className="px-4 py-6">

@@ -1,13 +1,15 @@
 import {Schema, model, Model} from "mongoose";
 
-interface UserSchema {
+interface TUser {
     email: Schema.Types.String;
     username: string;
     image?: string;
     bookmarks: Schema.Types.ObjectId[];
+    createdAt: string,
+    updatedAt: string,
 }
 
-const UserSchema = new Schema<UserSchema>({
+const UserSchema = new Schema<TUser>({
     email: {
         type: String,
         unique: [true, "Email already exists"],
@@ -28,8 +30,6 @@ const UserSchema = new Schema<UserSchema>({
     ]
 }, {timestamps: true});
 
-export type User = Model<UserSchema>;
+export type UserModel = Model<TUser>;
 
-const User = model<UserSchema, User>("User", UserSchema);
-
-export default User;
+export const User = model<TUser, UserModel>("User", UserSchema);

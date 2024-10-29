@@ -1,6 +1,6 @@
 import {Schema, model, Model} from "mongoose";
 
-export interface PropertySchema {
+export interface TProperty {
     _id: string;
     owner: Schema.Types.ObjectId;
     name: string;
@@ -32,7 +32,7 @@ export interface PropertySchema {
     updatedAt: string,
 }
 
-const PropertySchema = new Schema<PropertySchema>({
+const PropertySchema = new Schema<TProperty>({
     owner: {
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -109,8 +109,6 @@ const PropertySchema = new Schema<PropertySchema>({
     },
 }, {timestamps: true});
 
-export type Property = Model<PropertySchema>
+export type PropertyModel = Model<TProperty>
 
-const Property = model<PropertySchema, Property>("Property", PropertySchema);
-
-export default Property;
+export const Property = model<TProperty, PropertyModel>("Property", PropertySchema);

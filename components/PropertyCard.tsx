@@ -2,46 +2,13 @@ import {FaBed, FaBath, FaRulerCombined, FaMoneyBill} from "react-icons/fa"
 import Link from "next/link";
 import {FaLocationDot} from "react-icons/fa6";
 import Image from "next/image";
-
-//Todo: later extract it to .types.ts file
-export type PropertyData = {
-    _id: string;
-    owner: string;
-    name: string;
-    type: string;
-    description: string;
-    location: {
-        street: string;
-        city: string;
-        state: string;
-        zipcode: string;
-    }
-    beds: number;
-    baths: number;
-    square_feet: number;
-    amenities: string[]
-    rates: {
-        weekly?: number;
-        monthly?: number;
-        nightly?: number;
-        yearly?: number;
-    }
-    sellerInfo: {
-        name: string;
-        email: string;
-        phone: string;
-    },
-    images: string[],
-    isFeatured: boolean,
-    createdAt: string,
-    updatedAt: string,
-}
+import {TProperty} from "@/models/Property";
 
 type PropertyCardProps = {
-    data: PropertyData;
+    data: TProperty;
 }
 
-const PropertyCard = ({data}: PropertyCardProps) => {
+const PropertyCard = ({data}:PropertyCardProps) => {
 
     return (
         <div className="flex flex-col items-left justify-center rounded-xl shadow-md relative">

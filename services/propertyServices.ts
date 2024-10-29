@@ -1,5 +1,6 @@
 import {TProperty} from "@/models/Property";
 
+
 const apiDomain = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getAllProperties(): Promise<TProperty[] | undefined> {

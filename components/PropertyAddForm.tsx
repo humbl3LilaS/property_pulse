@@ -1,5 +1,5 @@
 "use client";
-import {Controller, SubmitHandler, useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import {PropertyAddSchema, PropertyAddSchemaType} from "@/validation/formValidationSchema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form";
@@ -12,10 +12,12 @@ import {Button} from "@/components/ui/button";
 const AMENITIES = ["Wifi", "Full Kitchen", "Washer & Dryer", "Free Parking", "Swimming Pool", "Hot Tub", "24/7 Security", "Wheelchair Accessible", "Elevator Access", "Dishwasher", "Gym/Fitness Center", "Air Conditioning", "Balcony/Patio", "Smart TV", "Coffee Maker"];
 
 const PropertyAddForm = () => {
+
     const form = useForm<PropertyAddSchemaType>({
         resolver: zodResolver(PropertyAddSchema),
+        mode: "onBlur",
         defaultValues: {
-            type: "apartment",
+            type: "",
             name: "",
             description: "",
             street: "",
@@ -32,28 +34,15 @@ const PropertyAddForm = () => {
             weekly: 0,
             monthly: 0,
             nightly: 0,
-            amenities: []
+            amenities:[]
         }
     });
-
-    const selectedAmenities = form.watch("amenities");
-
-    const amenitiesSelectHandler = (value: string) => {
-        const updatedValue = selectedAmenities.includes(value) ? selectedAmenities.filter(item => item !== value) : [...selectedAmenities, value];
-        form.setValue("amenities", updatedValue);
-    };
-
-    const imagesSelectHandler = (value: File[]) => {
-        form.setValue("images", value);
-    };
-
-    const onSubmit: SubmitHandler<PropertyAddSchemaType> = (value) => {
-        console.log(value);
-    };
+    console.log(form.getValues());
+    console.log(form.formState.errors);
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form action={"/api/properties"} method={"POST"} encType="multipart/form-data">
                 <h2 className="text-3xl text-center font-semibold mb-6">
                     Add Property
                 </h2>
@@ -200,8 +189,11 @@ const PropertyAddForm = () => {
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                         {AMENITIES.map((item, index) => (
                             <div key={index} className={"flex items-center gap-x-2"}>
-                                <Controller name={"amenities"} control={form.control} render={() =>
-                                    (<Input type={"checkbox"} onChange={() => amenitiesSelectHandler(item)} id={item}
+                                <Controller name={"amenities"} control={form.control} render={({field}) =>
+                                    (<Input type={"checkbox"} name={"amenities"} value={item} onChange={() => {
+                                        const updatedField = field.value.includes(item) ? field.value.filter(field => field !== item) : [...field.value, item];
+                                        field.onChange(updatedField);
+                                    }} id={item}
                                             className={"aspect-square w-5"}/>)
                                 }/>
                                 <Label htmlFor={item} className={"cursor-pointer"}>{item}</Label>
@@ -300,40 +292,16 @@ const PropertyAddForm = () => {
                 />
 
                 <div className={"mb-4"}>
-                    <Controller name={"images"} control={form.control} render={() => (
-                        <Input type={"file"} multiple={true} accept={"images/*"}
-                               onChange={(e) => imagesSelectHandler(e.target.files ? Array.from(e.target.files) : [])}/>
+                    <Controller name={"images"} control={form.control} render={({field}) => (
+                        <Input type={"file"} multiple={true} accept={"images/*"} name={"images"}
+                               onChange={(e) => field.onChange(e.target.files ? Array.from(e.target.files) : [])}/>
                     )}/>
                 </div>
-                {/*<FormField name={"images"}*/}
-                {/*           render={({field}) => (*/}
-                {/*               <FormItem className="mb-4">*/}
-                {/*                   <FormLabel className="mb-2 text-base text-gray-700 font-bold">*/}
-                {/*                       Images (Select up to 4 images)*/}
-                {/*                   </FormLabel>*/}
-                {/*                   <FormControl>*/}
-                {/*                       <Input*/}
-                {/*                           {...field}*/}
-                {/*                           type="file"*/}
-                {/*                           multiple={true}*/}
-                {/*                           onChange={(e) => {*/}
-
-                {/*                               const files = e.target.files ? Array.from(e.target.files) : [];*/}
-                {/*                               const updatedFile = [...field.value, ...files] as File[];*/}
-                {/*                               console.log(updatedFile);*/}
-                {/*                               console.log(e.target.value);*/}
-                {/*                               field.onChange(updatedFile);*/}
-                {/*                           }}*/}
-                {/*                       />*/}
-                {/*                   </FormControl>*/}
-                {/*               </FormItem>*/}
-                {/*           )}/>*/}
 
                 <div>
                     <Button
                         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                         type="submit"
-                        disabled={form.formState.isSubmitting || !form.formState.isValid}
                     >
                         Add Property
                     </Button>

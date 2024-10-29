@@ -11,14 +11,14 @@ export const PropertyAddSchema = z.object({
     beds: z.number().min(1).max(10),
     baths: z.number().min(1).max(10),
     squareFeet: z.number().min(1).max(100000),
-    amenities: z.string().array(),
+    amenities: z.custom<string[]>(),
     weekly: z.number().optional(),
     monthly: z.number().optional(),
     nightly: z.number().optional(),
     sellerName: z.string().min(1).max(50),
     sellerEmail: z.string().email(),
     sellerPhone: z.string().regex(/^09\d{9}$/),
-    images: z.custom<File[]>()
+    images: z.custom<File[]>(),
 });
 
 export type PropertyAddSchemaType = Zod.infer<typeof PropertyAddSchema>

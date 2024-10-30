@@ -14,10 +14,10 @@ const PropertyCard = ({data}:PropertyCardProps) => {
         <div className="flex flex-col items-left justify-center rounded-xl shadow-md relative">
             <Image
                 src={data.images[0]}
-                width={400}
-                height={400}
+                width={500}
+                height={500}
                 alt=""
-                className='w-full h-auto rounded-t-xl'
+                className='w-full  min-h-[250px] rounded-t-xl'
             />
             <div className="h-full p-4 flex flex-col justify-center">
                 <div className="text-left md:text-center lg:text-left mb-6">

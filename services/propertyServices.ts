@@ -36,3 +36,39 @@ export async function getPropertiesById(id: string): Promise<TProperty | undefin
         return undefined;
     }
 }
+
+export async function getPropertiesByUserId(userId: string) {
+    try {
+        if (!apiDomain) {
+            return undefined;
+        }
+        const res = await fetch(`${apiDomain}/properties/user/${userId}`);
+
+        if (!res.ok) {
+            return undefined;
+        }
+
+        return res.json();
+    } catch (error) {
+        console.error("error in fetching properties by ID", error);
+        return undefined;
+    }
+}
+
+export async function deletePropertyById(id: string) {
+    try {
+        if (!apiDomain) {
+            return undefined;
+        }
+        const res = await fetch(`${apiDomain}/properties/${id}`, {method: "DELETE"});
+
+        if (!res.ok) {
+            return undefined;
+        }
+
+        return res.json();
+    } catch (error) {
+        console.error("error in deleting properties by ID", error);
+        return undefined;
+    }
+}

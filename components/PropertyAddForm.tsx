@@ -17,7 +17,6 @@ const PropertyAddForm = () => {
         resolver: zodResolver(PropertyAddSchema),
         mode: "onChange",
         defaultValues: {
-            type: "",
             name: "",
             description: "",
             street: "",
@@ -52,6 +51,7 @@ const PropertyAddForm = () => {
                                 id="type"
                                 className="border rounded w-full py-2 px-3"
                                 {...field}
+                                defaultValue={field.value}
                             >
                                 <option value="Apartment">Apartment</option>
                                 <option value="Condo">Condo</option>

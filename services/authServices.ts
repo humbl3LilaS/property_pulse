@@ -1,7 +1,7 @@
 import GoogleProvider from "next-auth/providers/google";
 import connectDB from "@/config/database";
 import {User} from "@/models/User";
-import {AuthOptions, Profile} from "next-auth";
+import {AuthOptions, getServerSession, Profile} from "next-auth";
 
 
 export const authOption: AuthOptions = {
@@ -35,4 +35,25 @@ export const authOption: AuthOptions = {
             return true;
         },
     }
+};
+
+export const getSessionUser = async () => {
+    try {
+        const session = await getServerSession();
+        if (!session) {
+            return undefined;
+        }
+        const email = session?.user?.email;
+
+        await connectDB();
+        const user = await User.findOne({email: email});
+        return {
+            id: user?._id.toString(),
+            ...session.user,
+        };
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e: unknown) {
+        return undefined;
+    }
+
 };

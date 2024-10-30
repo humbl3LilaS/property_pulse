@@ -1,8 +1,7 @@
 import connectDB from "@/config/database";
 import {Property} from "@/models/Property";
-import {getServerSession} from "next-auth";
-import {User} from "@/models/User";
-
+import {getSessionUser} from "@/services/authServices";
+import cloudinary from "@/config/cloudinary";
 
 // GET /api/properties
 export const GET = async () => {
@@ -20,18 +19,23 @@ export const GET = async () => {
 export const POST = async (request: Request) => {
     try {
         await connectDB();
-        const session = await getServerSession();
-        if (!session) {
+
+        /*
+        * get session and fetch userId from the db
+        * */
+        const user = await getSessionUser();
+        if (!user) {
             return new Response("Unauthorized", {status: 401});
         }
+        /*
+        * Transform from data into PropertyObject Shape to store in db
+        * */
 
-        const user = await User.findOne({email: session?.user?.email});
-        const userId = user._id.toString();
         const data = await request.formData();
         const amenities = data.getAll("amenities");
         const images = (data.getAll("images") as File[]).filter(image => image.name !== "");
         const propertyData = {
-            owner: userId,
+            owner: user?.id,
             type: data.get("type"),
             name: data.get("name"),
             description: data.get("description"),
@@ -45,7 +49,6 @@ export const POST = async (request: Request) => {
             baths: Number(data.get("baths")),
             square_feet: Number(data.get("squareFeet")),
             amenities,
-            images,
             rates: {
                 weekly: Number(data.get("weekly")) ? Number(data.get("weekly")) : undefined,
                 monthly: Number(data.get("monthly")) ? Number(data.get("monthly")) : undefined,
@@ -56,11 +59,43 @@ export const POST = async (request: Request) => {
                 email: data.get("sellerEmail"),
                 phone: data.get("sellerPhone"),
             },
-            is_featured: false
+            is_featured: false,
+            images: [] as string[],
         };
-        console.log(propertyData);
 
-        return new Response(JSON.stringify({message: "success"}), {status: 200});
+        // Upload image(s) to Cloudinary
+        const imageUploadPromises = [];
+
+        for (const image of images) {
+            const imageBuffer = await image.arrayBuffer();
+            const imageArray = Array.from(new Uint8Array(imageBuffer));
+            const imageData = Buffer.from(imageArray);
+
+            // Convert the image data to base64
+            const imageBase64 = imageData.toString("base64");
+
+            // Make request to upload to Cloudinary
+            const result = await cloudinary.uploader.upload(
+                `data:image/png;base64,${imageBase64}`,
+                {
+                    folder: "propertypulse",
+                }
+            );
+
+            imageUploadPromises.push(result.secure_url);
+
+            // Wait for all images to upload
+            const uploadedImages = await Promise.all(imageUploadPromises);
+            // Add uploaded images to the propertyData object
+            propertyData.images = uploadedImages;
+        }
+        console.log("propertyData", propertyData);
+
+        const newProperty = new Property(propertyData);
+        await newProperty.save();
+
+        return Response.redirect(`${process.env.NEXTAUTH_URL}/properties/${newProperty._id}`);
+
     } catch (e) {
         console.log(e);
         return new Response("Something went wrong", {status: 500});

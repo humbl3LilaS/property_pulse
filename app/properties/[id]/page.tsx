@@ -1,6 +1,7 @@
 import {getPropertiesById} from "@/services/propertyServices";
 import PropertyHeader from "@/components/PropertyHeader";
 import PropertyDetails from "@/components/PropertyDetails";
+import PropertyImages from "@/components/PropertyImages";
 
 type PropertyDetailsProps = {
     params: Promise<{ id: string }>
@@ -110,7 +111,7 @@ const PropertyDetailsPage = async ({params}: PropertyDetailsProps) => {
                     </div>
                 </div>
             </section>
-
+            <PropertyImages images={data.images}/>
         </>
     )
         ;

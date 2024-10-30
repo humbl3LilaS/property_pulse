@@ -89,8 +89,6 @@ export const POST = async (request: Request) => {
             // Add uploaded images to the propertyData object
             propertyData.images = uploadedImages;
         }
-        console.log("propertyData", propertyData);
-
         const newProperty = new Property(propertyData);
         await newProperty.save();
 

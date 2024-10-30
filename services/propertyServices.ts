@@ -72,3 +72,21 @@ export async function deletePropertyById(id: string) {
         return undefined;
     }
 }
+
+export async function updateProperty(id: string, payload: Partial<TProperty>) {
+    try {
+        if (!apiDomain) {
+            return undefined;
+        }
+        const res = await fetch(`${apiDomain}/properties/${id}`, {method: "PATCH", body: JSON.stringify(payload)});
+
+        if (!res.ok) {
+            return undefined;
+        }
+
+        return res.json();
+    } catch (error) {
+        console.error("error in deleting properties by ID", error);
+        return undefined;
+    }
+}

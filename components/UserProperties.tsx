@@ -42,7 +42,7 @@ const UserProperties = ({data}: UserPropertiesProps) => {
                     <p className="text-gray-600">Address: {item.location.street} {item.location.city} {item.location.state}</p>
                 </div>
                 <div className="mt-2">
-                    <Link href="/properties/add"
+                    <Link href={`/properties/${item?._id.toString()}/edit`}
                           className="bg-blue-500 text-white px-3 py-3 rounded-md mr-2 hover:bg-blue-600"
                     >
                         Edit

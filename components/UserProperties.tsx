@@ -1,10 +1,12 @@
 "use client";
+
 import {deletePropertyById} from "@/services/propertyServices";
 import Link from "next/link";
 import Image from "next/image";
 import {TProperty} from "@/models/Property";
 import {Button} from "@/components/ui/button";
 import {useState} from "react";
+import {toast} from "react-toastify";
 
 type UserPropertiesProps = {
     data: TProperty[]
@@ -16,9 +18,11 @@ const UserProperties = ({data}: UserPropertiesProps) => {
     const deleteHandler = async (propertyId: string) => {
         const res = await deletePropertyById(propertyId);
         if (!res) {
-            console.log(`deleting property ${propertyId} failed`);
+            toast.error("Error deleting property");
+        } else {
+            setProperties(properties.filter(property => property._id.toString() !== propertyId));
+            toast.success("Property Deleted");
         }
-        setProperties(properties.filter(property => property._id.toString() !== propertyId));
     };
 
     return (

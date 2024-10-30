@@ -1,3 +1,4 @@
+"use server"
 import UserProfile from "@/components/UserProfile";
 import UserProperties from "@/components/UserProperties";
 import {getSessionUser} from "@/services/authServices";
@@ -9,6 +10,8 @@ const ProfilePage = async () => {
 
     const data = await getPropertiesByUserId(session?.id);
 
+
+
     return (
         <section className="bg-blue-50">
             <div className="container m-auto py-24">
@@ -17,7 +20,7 @@ const ProfilePage = async () => {
                     <div className={"flex flex-col md:flex-row"}>
                         <UserProfile/>
                         <Suspense fallback={<div>Loading...</div>}>
-                            <UserProperties data={data}/>
+                            {data && <UserProperties data={data}/>}
                         </Suspense>
                     </div>
                 </div>

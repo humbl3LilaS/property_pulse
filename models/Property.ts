@@ -1,4 +1,4 @@
-import {Schema, model, Model, models} from "mongoose";
+import {Schema, model, models} from "mongoose";
 
 export interface TProperty {
     _id: Schema.Types.ObjectId;
@@ -32,7 +32,7 @@ export interface TProperty {
     updatedAt: string,
 }
 
-const PropertySchema = new Schema<TProperty>({
+const PropertySchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -109,6 +109,5 @@ const PropertySchema = new Schema<TProperty>({
     },
 }, {timestamps: true});
 
-export type PropertyModel = Model<TProperty>
 
-export const Property = models.Property as Model<TProperty, PropertyModel> || model<TProperty, PropertyModel>("Property", PropertySchema);
+export const Property = models.Property || model("Property", PropertySchema);

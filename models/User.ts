@@ -1,6 +1,6 @@
-import {Schema, model, Model, models} from "mongoose";
+import {Schema, model,  models} from "mongoose";
 
-interface TUser {
+export interface TUser {
     email: Schema.Types.String;
     username: string;
     image?: string;
@@ -9,7 +9,7 @@ interface TUser {
     updatedAt: string,
 }
 
-const UserSchema = new Schema<TUser>({
+const UserSchema = new Schema({
     email: {
         type: String,
         unique: [true, "Email already exists"],
@@ -30,6 +30,4 @@ const UserSchema = new Schema<TUser>({
     ]
 }, {timestamps: true});
 
-export type UserModel = Model<TUser>;
-
-export const User = models.User as Model<TUser, UserModel> || model<TUser, UserModel>("User", UserSchema);
+export const User = models.User || model("User", UserSchema);

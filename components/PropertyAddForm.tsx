@@ -5,9 +5,9 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Label} from "@/components/ui/label";
 import {Button} from "@/components/ui/button";
+
 
 const AMENITIES = ["Wifi", "Full Kitchen", "Washer & Dryer", "Free Parking", "Swimming Pool", "Hot Tub", "24/7 Security", "Wheelchair Accessible", "Elevator Access", "Dishwasher", "Gym/Fitness Center", "Air Conditioning", "Balcony/Patio", "Smart TV", "Coffee Maker"];
 
@@ -15,7 +15,7 @@ const PropertyAddForm = () => {
 
     const form = useForm<PropertyAddSchemaType>({
         resolver: zodResolver(PropertyAddSchema),
-        mode: "onBlur",
+        mode: "onChange",
         defaultValues: {
             type: "",
             name: "",
@@ -34,15 +34,12 @@ const PropertyAddForm = () => {
             weekly: 0,
             monthly: 0,
             nightly: 0,
-            amenities:[]
+            amenities: []
         }
     });
-    console.log(form.getValues());
-    console.log(form.formState.errors);
-
     return (
         <Form {...form}>
-            <form action={"/api/properties"} method={"POST"} encType="multipart/form-data">
+            <form action={"/api/properties"} method={"POST"} encType={"multipart/form-data"}>
                 <h2 className="text-3xl text-center font-semibold mb-6">
                     Add Property
                 </h2>
@@ -51,22 +48,19 @@ const PropertyAddForm = () => {
                     <FormItem className={"mb-4"}>
                         <FormLabel className={"mb-2 text-base text-gray-700 font-bold "}>Type</FormLabel>
                         <FormControl>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder={"Select Property Type"}/>
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value={"all"}>All</SelectItem>
-                                    <SelectItem value={"apartment"}>Apartment</SelectItem>
-                                    <SelectItem value={"studio"}>Studio</SelectItem>
-                                    <SelectItem value={"condo"}>Condo</SelectItem>
-                                    <SelectItem value={"house"}>House</SelectItem>
-                                    <SelectItem value={"cabin-cottage"}>Cabin or Cottage</SelectItem>
-                                    <SelectItem value={"loft"}>Loft</SelectItem>
-                                    <SelectItem value={"room"}>Room</SelectItem>
-                                    <SelectItem value={"other"}>Other</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <select
+                                id="type"
+                                className="border rounded w-full py-2 px-3"
+                                {...field}
+                            >
+                                <option value="Apartment">Apartment</option>
+                                <option value="Condo">Condo</option>
+                                <option value="House">House</option>
+                                <option value="Cabin Or Cottage">Cabin or Cottage</option>
+                                <option value="Room">Room</option>
+                                <option value="Studio">Studio</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </FormControl>
                     </FormItem>
                 )}/>
@@ -191,6 +185,7 @@ const PropertyAddForm = () => {
                             <div key={index} className={"flex items-center gap-x-2"}>
                                 <Controller name={"amenities"} control={form.control} render={({field}) =>
                                     (<Input type={"checkbox"} name={"amenities"} value={item} onChange={() => {
+                                        // @ts-expect-error amenities's default value is [] so it will have value
                                         const updatedField = field.value.includes(item) ? field.value.filter(field => field !== item) : [...field.value, item];
                                         field.onChange(updatedField);
                                     }} id={item}
@@ -302,6 +297,7 @@ const PropertyAddForm = () => {
                     <Button
                         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                         type="submit"
+                        disabled={form.formState.isSubmitting || !form.formState.isValid}
                     >
                         Add Property
                     </Button>

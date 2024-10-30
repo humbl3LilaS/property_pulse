@@ -15,7 +15,7 @@ export async function getAllProperties(): Promise<TProperty[] | undefined> {
         }
         return res.json();
     } catch (error) {
-        console.error(error);
+        console.error("error in fetching all properties", error);
     }
 }
 
@@ -32,7 +32,7 @@ export async function getPropertiesById(id: string): Promise<TProperty | undefin
 
         return res.json();
     } catch (error) {
-        console.error(error);
+        console.error("error in fetching properties by ID", error);
         return undefined;
     }
 }

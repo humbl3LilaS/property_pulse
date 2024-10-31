@@ -40,7 +40,6 @@ const PropertyEditForm = ({defaultValue}: { defaultValue: TProperty }) => {
     });
 
     const onSubmit: SubmitHandler<PropertyEditSchemaType> = async (values) => {
-        console.log(values);
         const payload: Partial<TProperty> = {
             type: values.type,
             name: values.name,

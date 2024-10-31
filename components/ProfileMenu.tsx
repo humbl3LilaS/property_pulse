@@ -8,7 +8,6 @@ import {signOut, useSession} from "next-auth/react";
 
 const ProfileMenu = () => {
     const {data: session} = useSession();
-    console.log(session?.user?.image);
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild={true} className={"p-0 m-0"}>

@@ -18,7 +18,6 @@ const MobileMenu = () => {
         setAuthProvider();
     }, []);
 
-    console.log("providers", providers);
 
     const menuToggler = () => {
         setMenuOpen(prev => !prev);

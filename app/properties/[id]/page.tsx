@@ -5,6 +5,7 @@ import PropertyImages from "@/components/PropertyImages";
 import BookmarkBtn from "@/components/BookmarkBtn";
 import ShareBtn from "@/components/ShareBtn";
 import ContactForm from "@/components/ContactForm";
+import {getSessionUser} from "@/services/authServices";
 
 type PropertyDetailsProps = {
     params: Promise<{ id: string }>
@@ -13,7 +14,7 @@ type PropertyDetailsProps = {
 const PropertyDetailsPage = async ({params}: PropertyDetailsProps) => {
     const {id} = await params;
     const data = await getPropertiesById(id);
-
+    const user = await getSessionUser();
     if (!data) {
         return <h1 className={"mt-10 text-2xl font-bold text-center"}>Property Not found</h1>;
     }
@@ -28,7 +29,7 @@ const PropertyDetailsPage = async ({params}: PropertyDetailsProps) => {
                         <PropertyDetails data={data}/>
                         {/*todo: make it into separate form component*/}
                         <aside className="space-y-4">
-                            <BookmarkBtn/>
+                            <BookmarkBtn userId={user?.id}/>
                             <ShareBtn/>
                             <ContactForm/>
                         </aside>

@@ -24,7 +24,6 @@ export const authOption: AuthOptions = {
             await connectDB();
 
             const userExists = await User.findOne({email: profile?.email});
-            console.log(userExists);
             if (!userExists) {
                 await User.create({
                     email: profile?.email,
@@ -34,6 +33,10 @@ export const authOption: AuthOptions = {
             }
             return true;
         },
+
+        async session({session}) {
+            return session;
+        }
     }
 };
 

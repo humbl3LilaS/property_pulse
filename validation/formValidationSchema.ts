@@ -72,3 +72,10 @@ export const ContactFormSchema = z.object({
 });
 
 export type ContactFormSchemaType = Zod.infer<typeof ContactFormSchema>;
+
+export const SearchFormSchema = z.object({
+    searchString: z.string().optional(),
+    type: z.string().optional(),
+});
+
+export type SearchFormSchemaType = Zod.infer<typeof SearchFormSchema>;

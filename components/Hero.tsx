@@ -1,7 +1,4 @@
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
-import PropertyTypeSelector from "@/components/PropertyTypeSelector";
-import {Button} from "@/components/ui/button";
+import SearchForm from "@/components/SearchForm";
 
 const Hero = () => {
     return (
@@ -18,17 +15,7 @@ const Hero = () => {
                     </p>
                 </div>
             </div>
-            <form className={"w-full max-w-2xl p-4 mt-3 mx-auto flex flex-col md:flex-row md:gap-x-4"}>
-                <div className={"w-full mb-4 md:w-3/5 md:mb-0"}>
-                    <Label className={"sr-only"} htmlFor={"location"}>Location</Label>
-                    <Input className={"w-full px-4 py-3 rounded-lg bg-white text-gray-800"}
-                           placeholder="Enter Location (City, State, Zip, etc"/>
-                </div>
-                <div className="w-full md:w-2/5 md:pl-2">
-                    <PropertyTypeSelector/>
-                </div>
-                <Button type={"submit"} className={"mt-4 bg-blue-500 transition-colors duration-500 hover:bg-blue-600 focus-visible:ring-gary-500 md:mt-0"}>Search</Button>
-            </form>
+            <SearchForm/>
         </section>
     );
 };

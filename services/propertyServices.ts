@@ -90,3 +90,21 @@ export async function updateProperty(id: string, payload: Partial<TProperty>) {
         return undefined;
     }
 }
+
+export async function getSearchedProperties({location, propertyType}: { location?: string, propertyType?: string }) {
+    try {
+        if (!apiDomain) {
+            return undefined;
+        }
+        const res = await fetch(`${apiDomain}/properties/search?location=${location}&propertyType=${propertyType}`);
+
+        if (!res.ok) {
+            return undefined;
+        }
+
+        return res.json();
+    } catch (error) {
+        console.error("error in deleting properties by ID", error);
+        return undefined;
+    }
+}

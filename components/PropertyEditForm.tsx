@@ -80,7 +80,7 @@ const PropertyEditForm = ({defaultValue}: { defaultValue: TProperty }) => {
                     Edit Property
                 </h2>
 
-                <FormField name={"type"} render={({field}) => (
+                <FormField name={"type"} control={form.control}  render={({field}) => (
                     <FormItem className={"mb-4"}>
                         <FormLabel className={"mb-2 text-base text-gray-700 font-bold "}>Type</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>

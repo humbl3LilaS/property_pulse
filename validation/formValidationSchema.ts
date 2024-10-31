@@ -63,3 +63,12 @@ export const PropertyEditSchema = z.object({
 });
 
 export type PropertyEditSchemaType = Zod.infer<typeof PropertyEditSchema>
+
+export const ContactFormSchema = z.object({
+    name: z.string().min(1),
+    email: z.string().email(),
+    phone: z.string().regex(/^09\d{9}$/),
+    message: z.string().min(1).max(400),
+});
+
+export type ContactFormSchemaType = Zod.infer<typeof ContactFormSchema>;

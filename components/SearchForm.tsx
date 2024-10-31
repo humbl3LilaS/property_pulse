@@ -1,5 +1,4 @@
 "use client";
-
 import {SubmitHandler, useForm} from "react-hook-form";
 import {SearchFormSchema, SearchFormSchemaType} from "@/validation/formValidationSchema";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -10,7 +9,7 @@ import {Button} from "@/components/ui/button";
 
 import {useRouter} from "next/navigation";
 
-const SearchForm = () => {
+const   SearchForm = () => {
     const form = useForm<SearchFormSchemaType>({
         resolver: zodResolver(SearchFormSchema),
         defaultValues: {searchString: "", type: ""}
@@ -33,7 +32,7 @@ const SearchForm = () => {
         <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div
-                    className={"w-full max-w-2xl p-4 mt-3 mx-auto flex flex-col md:flex-row md:gap-x-4 md:items-center"}>
+                    className={"w-full max-w-2xl p-4 mx-auto flex flex-col md:flex-row md:gap-x-4 md:items-center"}>
                     <FormField name={"searchString"} control={form.control} render={({field}) => (
                         <FormItem className={"w-full mb-4 md:w-3/5 md:mb-0 "}>
                             <FormLabel className={"mb-2 text-base text-gray-700 font-bold sr-only"}>

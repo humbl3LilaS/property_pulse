@@ -3,25 +3,15 @@
 import {Button} from "@/components/ui/button";
 import {FaBookmark} from "react-icons/fa6";
 import {cn} from "@/lib/utils";
-import {getUserInfo, updateBookmark} from "@/services/bookmarkServices";
-import {useParams} from "next/navigation";
+import {updateBookmark} from "@/services/bookmarkServices";
 import {toast} from "react-toastify";
-import {useEffect, useState} from "react";
+import {useState} from "react";
+import {useParams} from "next/navigation";
 
 
-const BookmarkBtn = ({userId}: { userId: string }) => {
+const BookmarkBtn = ({active}: { active: boolean }) => {
     const {id} = useParams();
-    const [isActive, setActive] = useState(false);
-
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            const userInfo = await getUserInfo(userId);
-            const bookmarks = userInfo.bookmarks;
-            const isInclude = bookmarks.includes(id);
-            setActive(isInclude);
-        };
-        fetchUserInfo();
-    }, []);
+    const [isActive, setActive] = useState(active);
 
 
     const bookmarkHandler = async () => {

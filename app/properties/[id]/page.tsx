@@ -6,6 +6,7 @@ import BookmarkBtn from "@/components/BookmarkBtn";
 import ShareBtn from "@/components/ShareBtn";
 import ContactForm from "@/components/ContactForm";
 import {getSessionUser} from "@/services/authServices";
+import {getUserInfo} from "@/services/bookmarkServices";
 
 type PropertyDetailsProps = {
     params: Promise<{ id: string }>
@@ -15,6 +16,9 @@ const PropertyDetailsPage = async ({params}: PropertyDetailsProps) => {
     const {id} = await params;
     const data = await getPropertiesById(id);
     const user = await getSessionUser();
+    const userInfo = await getUserInfo(user?.id);
+
+    const isActiveBookmark = userInfo?.bookmarks?.includes(id);
     if (!data) {
         return <h1 className={"mt-10 text-2xl font-bold text-center"}>Property Not found</h1>;
     }
@@ -27,9 +31,8 @@ const PropertyDetailsPage = async ({params}: PropertyDetailsProps) => {
                 <div className="container m-auto py-10 px-6">
                     <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
                         <PropertyDetails data={data}/>
-                        {/*todo: make it into separate form component*/}
                         <aside className="space-y-4">
-                            <BookmarkBtn userId={user?.id}/>
+                            <BookmarkBtn active={isActiveBookmark}/>
                             <ShareBtn/>
                             <ContactForm/>
                         </aside>

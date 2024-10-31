@@ -31,7 +31,7 @@ const PropertyDetailsPage = async ({params}: PropertyDetailsProps) => {
                     <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
                         <PropertyDetails data={data}/>
                         <aside className="space-y-4">
-                            <BookmarkBtn active={isActiveBookmark}/>
+                            {user?.id && <BookmarkBtn active={isActiveBookmark}/>}
                             <ShareBtn property={data}/>
                             <ContactForm/>
                         </aside>

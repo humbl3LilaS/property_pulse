@@ -7,10 +7,13 @@ import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
 import {FaPaperPlane} from "react-icons/fa";
+import {useSession} from "next-auth/react";
 
 const ContactForm = () => {
     const form = useForm<ContactFormSchemaType>({resolver: zodResolver(ContactFormSchema)});
-
+    const session = useSession();
+    // @ts-expect-error I added the id of user in callbacks function
+    const userId = session?.data?.user?.id;
     const onSubmit: SubmitHandler<ContactFormSchemaType> = (data) => {
         console.log(data);
     };
@@ -67,7 +70,7 @@ const ContactForm = () => {
                     <Button
                         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center"
                         type="submit"
-                        disabled={form.formState.isSubmitting || !form.formState.isValid}
+                        disabled={form.formState.isSubmitting || !form.formState.isValid || !userId}
                     >
                         <FaPaperPlane/> <span>Send message</span>
                     </Button>

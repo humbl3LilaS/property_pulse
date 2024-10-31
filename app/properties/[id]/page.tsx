@@ -32,7 +32,7 @@ const PropertyDetailsPage = async ({params}: PropertyDetailsProps) => {
                         <PropertyDetails data={data}/>
                         <aside className="space-y-4">
                             <BookmarkBtn active={isActiveBookmark}/>
-                            <ShareBtn/>
+                            <ShareBtn property={data}/>
                             <ContactForm/>
                         </aside>
                     </div>

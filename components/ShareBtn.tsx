@@ -1,13 +1,37 @@
-import {Button} from "@/components/ui/button";
-import {FaShare} from "react-icons/fa";
+"use client";
+import {useParams} from "next/navigation";
+import {
+    FacebookIcon,
+    FacebookShareButton,
+    TelegramIcon,
+    TelegramShareButton,
+    TwitterIcon,
+    TwitterShareButton
+} from "react-share";
+import {TProperty} from "@/models/Property";
 
-const ShareBtn = () => {
+type ShareBtnProps = {
+    property: TProperty;
+}
+
+const ShareBtn = ({property}: ShareBtnProps) => {
+    const {id} = useParams();
+    const shareUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/properties/${id}`;
     return (
-        <Button
-            className="bg-orange-500 hover:bg-orange-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
-        >
-            <FaShare/> <span>Share Property</span>
-        </Button>
+        <div>
+            <h3 className={"p-2 text-xl font-bold text-center"}>Share This Property</h3>
+            <div className={"py-4 flex gap-x-3 justify-center"}>
+                <FacebookShareButton url={shareUrl} hashtag={`#${property.type} for rent`} content={property.name}>
+                    <FacebookIcon size={40} round={true}/>
+                </FacebookShareButton>
+                <TwitterShareButton url={shareUrl}  content={shareUrl}>
+                    <TwitterIcon size={40} round={true}/>
+                </TwitterShareButton>
+                <TelegramShareButton url={shareUrl} content={shareUrl}>
+                    <TelegramIcon size={40} round={true}/>
+                </TelegramShareButton>
+            </div>
+        </div>
     );
 };
 

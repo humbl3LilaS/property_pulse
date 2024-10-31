@@ -7,15 +7,18 @@ import {updateBookmark} from "@/services/bookmarkServices";
 import {toast} from "react-toastify";
 import {useState} from "react";
 import {useParams} from "next/navigation";
+import {useSession} from "next-auth/react";
 
 
 const BookmarkBtn = ({active}: { active: boolean }) => {
     const {id} = useParams();
     const [isActive, setActive] = useState(active);
-
+    const session = useSession();
+    console.log("session", session);
 
     const bookmarkHandler = async () => {
-        const update = await updateBookmark(id as string);
+        // @ts-expect-error I add the user id in the middleware
+        const update = await updateBookmark({propertyId: id as string, userId: session.data?.user?.id});
         if (update) {
             toast.success("Bookmark updated successfully.");
             setActive(prev => !prev);

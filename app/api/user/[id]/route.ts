@@ -1,9 +1,8 @@
-import {NextRequest} from "next/server";
 import connectDB from "@/config/database";
 
 import {User} from "@/models/User";
 
-export const GET = async (request: NextRequest, {params}: { params: Promise<{ id: string }> }) => {
+export const GET = async (request: Request, {params}: { params: Promise<{ id: string }> }) => {
     try {
         const {id} = await params;
         await connectDB();

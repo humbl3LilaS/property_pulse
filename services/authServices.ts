@@ -35,14 +35,24 @@ export const authOption: AuthOptions = {
         },
 
         async session({session}) {
-            return session;
-        }
+            // 1. Get user from database
+            const user = await User.findOne({email: session?.user?.email});
+            // 2. Assign the user id to the session
+            // 3. return session
+            return {
+                ...session,
+                user: {
+                    ...session.user,
+                    id: user._id.toString(),
+                }
+            };
+        },
     }
 };
 
 export const getSessionUser = async () => {
     try {
-        const session = await getServerSession();
+        const session = await getServerSession(authOption);
         if (!session) {
             return undefined;
         }

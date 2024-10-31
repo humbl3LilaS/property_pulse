@@ -6,7 +6,7 @@ import BookmarkBtn from "@/components/BookmarkBtn";
 import ShareBtn from "@/components/ShareBtn";
 import ContactForm from "@/components/ContactForm";
 import {getSessionUser} from "@/services/authServices";
-import {getUserInfo} from "@/services/bookmarkServices";
+import {getBookmarks} from "@/services/bookmarkServices";
 
 type PropertyDetailsProps = {
     params: Promise<{ id: string }>
@@ -16,9 +16,8 @@ const PropertyDetailsPage = async ({params}: PropertyDetailsProps) => {
     const {id} = await params;
     const data = await getPropertiesById(id);
     const user = await getSessionUser();
-    const userInfo = await getUserInfo(user?.id);
-
-    const isActiveBookmark = userInfo?.bookmarks?.includes(id);
+    const bookmarks = await getBookmarks(user?.id);
+    const isActiveBookmark = bookmarks?.includes(id);
     if (!data) {
         return <h1 className={"mt-10 text-2xl font-bold text-center"}>Property Not found</h1>;
     }

@@ -2,6 +2,23 @@ import connectDB from "@/config/database";
 import {getSessionUser} from "@/services/authServices";
 import {Message, TMessage} from "@/models/Message";
 
+export const GET = async (request: Request, {params}: { params: Promise<{ id: string }> }) => {
+    try {
+        await connectDB();
+        const {id} = await params;
+        if (!id) {
+            return new Response("Bad Request", {status: 400});
+        }
+        const messages = await Message.find({receiver: id}).populate("property", "name");
+
+        return new Response(JSON.stringify(messages), {status: 200});
+
+    } catch (error) {
+        console.error("error occurred while fetching message ", error);
+        return new Response("Something went wrong", {status: 500});
+    }
+};
+
 export const POST = async (request: Request, {params}: { params: Promise<{ id: string }> }) => {
     try {
         await connectDB();
@@ -32,6 +49,42 @@ export const POST = async (request: Request, {params}: { params: Promise<{ id: s
 
     } catch (error) {
         console.error("error occurred while posting message ", error);
+        return new Response("Something went wrong", {status: 500});
+    }
+};
+
+
+export const PATCH = async (request: Request) => {
+    try {
+        const body = await request.json();
+
+        await connectDB();
+        const message = await Message.findByIdAndUpdate(body._id, {...body});
+        if (!message) {
+            return new Response("Message Not found", {status: 401});
+        }
+        return new Response(JSON.stringify(message), {status: 200});
+
+    } catch (error) {
+        console.log(error);
+        return new Response("Something went wrong", {status: 500});
+    }
+};
+
+export const DELETE = async (request: Request) => {
+    try {
+        const body = await request.json();
+
+        await connectDB();
+
+        const message = await Message.findByIdAndDelete(body.messageId);
+        if (!message) {
+            return new Response("Message Not found", {status: 401});
+        }
+        return new Response(JSON.stringify(message), {status: 200});
+
+    } catch (error) {
+        console.log(error);
         return new Response("Something went wrong", {status: 500});
     }
 };

@@ -2,9 +2,9 @@ import {Schema, model, models} from "mongoose";
 
 export interface TMessage {
     _id: Schema.Types.ObjectId;
-    sender: Schema.Types.ObjectId | string;
-    receiver: Schema.Types.ObjectId | string;
-    property: Schema.Types.ObjectId | string;
+    sender: Schema.Types.ObjectId;
+    receiver: Schema.Types.ObjectId;
+    property: Schema.Types.ObjectId;
     name: string;
     email: string;
     phone: string;

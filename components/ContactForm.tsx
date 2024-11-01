@@ -8,14 +8,52 @@ import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
 import {FaPaperPlane} from "react-icons/fa";
 import {useSession} from "next-auth/react";
+import {postMessage} from "@/services/messageServices";
+import {Schema} from "mongoose";
+import {toast} from "react-toastify";
 
-const ContactForm = () => {
-    const form = useForm<ContactFormSchemaType>({resolver: zodResolver(ContactFormSchema)});
+type ContactFormProps = {
+    propertyId: Schema.Types.ObjectId;
+    propertyOwner: Schema.Types.ObjectId;
+}
+
+const ContactForm = ({propertyId, propertyOwner}: ContactFormProps) => {
+    const form = useForm<ContactFormSchemaType>({
+        resolver: zodResolver(ContactFormSchema),
+        mode: "onChange",
+        defaultValues: {
+            name: "",
+            email: "",
+            phone: "",
+            message: "",
+        }
+    });
     const session = useSession();
     // @ts-expect-error I added the id of user in callbacks function
     const userId = session?.data?.user?.id;
-    const onSubmit: SubmitHandler<ContactFormSchemaType> = (data) => {
+    const onSubmit: SubmitHandler<ContactFormSchemaType> = async (data) => {
         console.log(data);
+        const message = await postMessage({
+            userId,
+            payload: {
+                sender: userId,
+                receiver: propertyOwner,
+                property: propertyId,
+                ...data
+            }
+        });
+        console.log("message", message);
+        if (!message) {
+            toast.error("Error sending message");
+        } else {
+            toast.success("Message sent successfully.");
+            form.reset({
+                name: "",
+                email: "",
+                phone: "",
+                message: "",
+            });
+        }
     };
 
     return (

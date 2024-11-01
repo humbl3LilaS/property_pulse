@@ -7,11 +7,11 @@ export const GET = async (request: Request, {params}: { params: Promise<{ id: st
         const {id} = await params;
         await connectDB();
 
-        const property = await User.findById(id);
-        if (!property) {
+        const user = await User.findById(id);
+        if (!user) {
             return new Response("Property Not found", {status: 404});
         }
-        return new Response(JSON.stringify(property), {status: 200});
+        return new Response(JSON.stringify(user), {status: 200});
     } catch (error) {
         console.error("error occurred while fetching property upload by user ", error);
         return new Response("Something went wrong", {status: 500});

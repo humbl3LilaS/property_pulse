@@ -33,7 +33,11 @@ const PropertyDetailsPage = async ({params}: PropertyDetailsProps) => {
                         <aside className="space-y-4">
                             {user?.id && <BookmarkBtn active={isActiveBookmark}/>}
                             <ShareBtn property={data}/>
-                            <ContactForm/>
+                            {/*show form if and only property owner is not current login user*/}
+                            {
+                                data?.owner !== user?.id &&
+                              <ContactForm propertyId={data._id} propertyOwner={data?.owner}/>
+                            }
                         </aside>
                     </div>
                 </div>

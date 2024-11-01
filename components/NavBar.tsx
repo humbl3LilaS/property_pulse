@@ -11,12 +11,14 @@ import {BuiltInProviderType} from "next-auth/providers/index";
 import {getMessages} from "@/services/messageServices";
 import {TMessagePopulated} from "@/components/MessageCard";
 import {cn} from "@/lib/utils";
+import {useMessageCountStore} from "@/store/messageCountStore";
 
 
 const NavBar = () => {
     const {data: session} = useSession();
     const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
-    const [messages, setMessages] = useState<TMessagePopulated[]>([]);
+    const messageCount = useMessageCountStore(state => state.messageCount);
+    const setMessageCount = useMessageCountStore(state => state.setMessageCount);
     useEffect(() => {
         const setAuthProvider = async () => {
             const res = await getProviders();
@@ -29,13 +31,12 @@ const NavBar = () => {
         const fetchMessages = async () => {
             //@ts-expect-error I added id in session callback
             const messages = await getMessages(session?.user?.id);
-            setMessages(messages);
+            const unreadMessage = messages?.filter((message: TMessagePopulated) => !message.isRead).length;
+            setMessageCount(unreadMessage);
         };
         fetchMessages();
-    }, [session]);
+    }, [session, setMessageCount]);
 
-    const unreadMessages = messages ? messages.filter(item => !item.isRead).length : undefined;
-    console.log(unreadMessages);
     return (
         <nav>
             <div
@@ -81,8 +82,8 @@ const NavBar = () => {
                         </svg>
 
                         < span
-                          className={cn("w-6 h-6 flex items-center justify-center absolute -top-2 -right-2 rounded-full  bg-red-500 text-white ", unreadMessages === 0 && "hidden")}>
-                                 < span> {unreadMessages}</span>
+                          className={cn("w-6 h-6 flex items-center justify-center absolute -top-2 -right-2 rounded-full  bg-red-500 text-white ", messageCount === 0 && "hidden")}>
+                                 < span> {messageCount}</span>
                         </span>
                       </Link>
                       <ProfileMenu/>

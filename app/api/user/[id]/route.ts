@@ -2,6 +2,8 @@ import connectDB from "@/config/database";
 
 import {User} from "@/models/User";
 
+export const dynamic = "force-dynamic";
+
 export const GET = async (request: Request, {params}: { params: Promise<{ id: string }> }) => {
     try {
         const {id} = await params;

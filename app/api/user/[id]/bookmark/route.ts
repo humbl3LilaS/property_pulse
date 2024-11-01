@@ -1,6 +1,8 @@
 import {TUser, User} from "@/models/User";
 import connectDB from "@/config/database";
 
+export const dynamic = 'force-dynamic';
+
 export const GET = async (request: Request, {params}: { params: Promise<{ id: string }> }) => {
     try {
         const {id} = await params;

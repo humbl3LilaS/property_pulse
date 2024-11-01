@@ -3,6 +3,8 @@ import {Property} from "@/models/Property";
 import {NextRequest} from "next/server";
 
 
+export const dynamic = 'force-dynamic';
+
 export const GET = async (request: NextRequest, {params}: { params: Promise<{ userId: string }> }) => {
     try {
         const {userId} = await params;

@@ -4,6 +4,8 @@ import {Property} from "@/models/Property";
 import {getSessionUser} from "@/services/authServices";
 
 
+export const dynamic = "force-dynamic";
+
 // GET /api/properties/id
 export const GET = async (request: NextRequest, {params}: { params: Promise<{ id: string }> }) => {
     try {

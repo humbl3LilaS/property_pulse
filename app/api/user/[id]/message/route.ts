@@ -2,6 +2,8 @@ import connectDB from "@/config/database";
 import {getSessionUser} from "@/services/authServices";
 import {Message, TMessage} from "@/models/Message";
 
+export const dynamic = 'force-dynamic';
+
 export const GET = async (request: Request, {params}: { params: Promise<{ id: string }> }) => {
     try {
         await connectDB();

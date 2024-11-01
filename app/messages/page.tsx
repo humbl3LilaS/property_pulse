@@ -5,7 +5,6 @@ import MessageCard, {TMessagePopulated} from "@/components/MessageCard";
 const MessagesPage = async () => {
     const user = await getSessionUser();
     const messages: TMessagePopulated[] | undefined = await getMessages(user?.id);
-    console.log(messages);
 
     return (
         <section className="bg-blue-50">

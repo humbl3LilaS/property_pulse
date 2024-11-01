@@ -8,12 +8,15 @@ import NavLink from "@/components/NavLink";
 import {ClientSafeProvider, getProviders, LiteralUnion, useSession, signIn} from "next-auth/react";
 import {useEffect, useState} from "react";
 import {BuiltInProviderType} from "next-auth/providers/index";
+import {getMessages} from "@/services/messageServices";
+import {TMessagePopulated} from "@/components/MessageCard";
+import {cn} from "@/lib/utils";
 
 
-function NavBar() {
+const NavBar = () => {
     const {data: session} = useSession();
-
     const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
+    const [messages, setMessages] = useState<TMessagePopulated[]>([]);
     useEffect(() => {
         const setAuthProvider = async () => {
             const res = await getProviders();
@@ -22,6 +25,17 @@ function NavBar() {
         setAuthProvider();
     }, []);
 
+    useEffect(() => {
+        const fetchMessages = async () => {
+            //@ts-expect-error I added id in session callback
+            const messages = await getMessages(session?.user?.id);
+            setMessages(messages);
+        };
+        fetchMessages();
+    }, [session]);
+
+    const unreadMessages = messages ? messages.filter(item => !item.isRead).length : undefined;
+    console.log(unreadMessages);
     return (
         <nav>
             <div
@@ -40,9 +54,9 @@ function NavBar() {
                 </ul>
                 <div className={"hidden md:flex items-center gap-x-2 md:gap-x-4"}>
                     {!session && <div>
-                        {providers && Object.values(providers).map((provider,idx) =>
+                        {providers && Object.values(providers).map((provider, idx) =>
                             <button className={" hidden  items-center gap-x-2 text-white md:flex"} key={idx}
-                                onClick={() => signIn(provider.id)}
+                                    onClick={() => signIn(provider.id)}
                             >
                                 <FaGoogle/>
                                 <span>Login or register</span>
@@ -65,9 +79,10 @@ function NavBar() {
                             d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
                           />
                         </svg>
-                        <span
-                          className={"w-6 h-6 flex items-center justify-center absolute -top-2 -right-2 rounded-full  bg-red-500 text-white "}>
-                            <span>2</span>
+
+                        < span
+                          className={cn("w-6 h-6 flex items-center justify-center absolute -top-2 -right-2 rounded-full  bg-red-500 text-white ", unreadMessages === 0 && "hidden")}>
+                                 < span> {unreadMessages}</span>
                         </span>
                       </Link>
                       <ProfileMenu/>
@@ -76,6 +91,6 @@ function NavBar() {
             </div>
         </nav>
     );
-}
+};
 
 export default NavBar;

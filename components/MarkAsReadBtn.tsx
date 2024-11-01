@@ -5,6 +5,7 @@ import {TMessagePopulated} from "@/components/MessageCard";
 import {cn} from "@/lib/utils";
 import {updateMessage} from "@/services/messageServices";
 import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
 
 type MarkAsReadBtnProps = {
     className?: string;
@@ -13,7 +14,8 @@ type MarkAsReadBtnProps = {
 
 const MarkAsReadBtn = ({className, data}: MarkAsReadBtnProps) => {
     const [isRead, setIsRead] = useState(data.isRead);
-    console.log("mark as btn rendered")
+    const router = useRouter();
+    console.log("mark as btn rendered");
     const handler = async () => {
         const updatedMessage = await updateMessage({
             userId: data.receiver.toString(), payload: {
@@ -26,6 +28,7 @@ const MarkAsReadBtn = ({className, data}: MarkAsReadBtnProps) => {
         } else {
             toast.success("Message marked as read.");
             setIsRead(true);
+            router.refresh();
         }
     };
 
